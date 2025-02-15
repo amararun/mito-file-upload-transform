@@ -1,0 +1,164 @@
+/* Import Nunito Sans font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;500;600;700;800&display=swap');
+
+/* Modern color scheme with indigo palette */
+:root {
+    --primary-color: #4F46E5;  /* Indigo 600 */
+    --primary-dark: #4338CA;   /* Indigo 700 */
+    --primary-light: #6366F1;  /* Indigo 500 */
+    --heading-color: #312E81;  /* Indigo 900 - for main headers */
+    --subheading-color: #4338CA;  /* Indigo 700 - for subheaders */
+    --text-color: #3730A3;     /* Indigo 800 - for important text */
+    --text-light: #6366F1;     /* Indigo 500 - for secondary text */
+    --background-color: #F9FAFB;
+    --card-background: #FFFFFF;
+}
+
+/* Global font settings */
+html, body, [class*="css"] {
+    font-family: 'Nunito Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--text-color);
+}
+
+/* Override Streamlit's default fonts everywhere */
+.stMarkdown, .stButton, .stDownloadButton, .stSelectbox, 
+.stTextInput, .stTextArea, .stNumberInput, .stDateInput,
+.stTimeInput, .stHeader, .stAlert, .stTitle, .stWidgetLabel,
+.stDataFrame, div[data-testid="stText"] {
+    font-family: 'Nunito Sans', sans-serif !important;
+}
+
+/* Make headers extra distinctive with indigo colors */
+h1, .stTitle {
+    font-family: 'Nunito Sans', sans-serif !important;
+    font-weight: 800;  /* Extra bold for main headers */
+    margin-bottom: 1rem;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    color: var(--heading-color) !important;
+}
+
+h2 {
+    font-family: 'Nunito Sans', sans-serif !important;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    color: var(--subheading-color) !important;
+}
+
+h3 {
+    font-family: 'Nunito Sans', sans-serif !important;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--text-light) !important;
+}
+
+/* Style links in indigo */
+a {
+    color: var(--primary-color) !important;
+    text-decoration: none;
+    font-family: 'Nunito Sans', sans-serif !important;
+}
+
+a:hover {
+    color: var(--primary-dark) !important;
+    text-decoration: underline;
+}
+
+/* Rest of your existing styles... */
+.stMarkdown, .stButton, .stDownloadButton {
+    background-color: var(--card-background);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    margin-bottom: 1rem;
+}
+
+/* Update button colors */
+.stButton > button, .stDownloadButton > button {
+    width: 100%;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    transition: all 150ms ease-in-out;
+    font-family: 'Nunito Sans', sans-serif !important;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.stButton > button:hover, .stDownloadButton > button:hover {
+    background-color: var(--primary-dark);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Update info boxes with indigo theme */
+.stAlert {
+    background-color: #EEF2FF;  /* Indigo 50 */
+    color: var(--text-color);
+    border: 1px solid #C7D2FE;  /* Indigo 200 */
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-family: 'Nunito Sans', sans-serif !important;
+}
+
+/* File uploader */
+.stUploadButton {
+    background-color: var(--card-background);
+    border: 2px dashed #C7D2FE;  /* Indigo 200 */
+    border-radius: 0.5rem;
+    padding: 1rem;
+    text-align: center;
+    color: var(--text-light);
+    font-family: 'Nunito Sans', sans-serif !important;
+}
+
+.stUploadButton:hover {
+    border-color: var(--primary-color);
+}
+
+/* DataFrame display with indigo accents */
+.dataframe {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 1px solid #C7D2FE;  /* Indigo 200 */
+    font-family: 'Nunito Sans', sans-serif !important;
+}
+
+.dataframe th {
+    background-color: #EEF2FF;  /* Indigo 50 */
+    padding: 0.75rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.dataframe td {
+    padding: 0.75rem;
+    border-top: 1px solid #E0E7FF;  /* Indigo 100 */
+    color: var(--text-color);
+}
+
+/* Code block styling */
+.stCodeBlock, code {
+    font-family: 'JetBrains Mono', 'Courier New', monospace !important;
+    font-size: 0.95rem;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+    background-color: #F5F3FF !important;  /* Indigo 50 with higher saturation */
+    border: 1px solid #C7D2FE;  /* Indigo 200 */
+}
+
+/* Additional styles to make text more readable */
+p, li, div {
+    line-height: 1.6;
+    font-weight: 400;
+    color: var(--text-color);
+    font-family: 'Nunito Sans', sans-serif !important;
+} 

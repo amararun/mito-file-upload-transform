@@ -19,90 +19,12 @@ st.set_page_config(
     }
 )
 
-# Custom CSS for modern styling
-st.markdown("""
-<style>
-    /* Modern color scheme */
-    :root {
-        --primary-color: #4F46E5;
-        --background-color: #F9FAFB;
-        --card-background: #FFFFFF;
-        --text-color: #111827;
-    }
+# Load external CSS
+def load_css(css_file):
+    with open(css_file, 'r') as f:
+        return f'<style>{f.read()}</style>'
 
-    /* Card-like containers */
-    .stMarkdown, .stButton, .stDownloadButton {
-        background-color: var(--card-background);
-        padding: 1.5rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-        margin-bottom: 1rem;
-    }
-
-    /* Button styling */
-    .stButton > button, .stDownloadButton > button {
-        width: 100%;
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 0.375rem;
-        font-weight: 500;
-        transition: all 150ms ease-in-out;
-    }
-
-    .stButton > button:hover, .stDownloadButton > button:hover {
-        background-color: #4338CA;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    }
-
-    /* Info boxes */
-    .stAlert {
-        background-color: #EEF2FF;
-        color: #3730A3;
-        border: 1px solid #C7D2FE;
-        padding: 1rem;
-        border-radius: 0.5rem;
-    }
-
-    /* Headers */
-    h1, h2, h3 {
-        color: var(--text-color);
-        font-weight: 600;
-        margin-bottom: 1rem;
-    }
-
-    /* File uploader */
-    .stUploadButton {
-        background-color: var(--card-background);
-        border: 2px dashed #E5E7EB;
-        border-radius: 0.5rem;
-        padding: 1rem;
-        text-align: center;
-    }
-
-    .stUploadButton:hover {
-        border-color: var(--primary-color);
-    }
-
-    /* DataFrame display */
-    .dataframe {
-        border-radius: 0.5rem;
-        overflow: hidden;
-        border: 1px solid #E5E7EB;
-    }
-
-    .dataframe th {
-        background-color: #F3F4F6;
-        padding: 0.75rem;
-    }
-
-    .dataframe td {
-        padding: 0.75rem;
-        border-top: 1px solid #E5E7EB;
-    }
-</style>
-""", unsafe_allow_html=True)
+st.markdown(load_css('style.css'), unsafe_allow_html=True)
 
 # Create a container for the main content
 with st.container():
