@@ -85,14 +85,11 @@ def clean_name(name):
 
 st.header("Upload files to use MitoSheet")
 
-# Create a centered container for the file uploader with wider middle column
-col1, col2, col3 = st.columns([1.5, 2, 1.5])  # Made middle column wider
-with col2:
-    uploaded_files = st.file_uploader(
-        "Choose files",
-        accept_multiple_files=True,
-        help="Supported formats: CSV, TXT, XLSX, Parquet"
-    )
+uploaded_files = st.file_uploader(
+    "Choose files",
+    accept_multiple_files=True,
+    help="Supported formats: CSV, TXT, XLSX, Parquet"
+)
 
 if uploaded_files:
     dataframes = []
