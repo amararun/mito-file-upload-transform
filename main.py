@@ -6,12 +6,12 @@ import io
 import os
 import re
 import keyword
+import time
 
 # Configure the app
 st.set_page_config(
-    page_title="MitoSheet Script Generator Demo",
-    page_icon="📊",
-    initial_sidebar_state="expanded",
+    page_title="MitoSheet Data Transformer",
+    page_icon="images/FXLOGO.png",
     layout="wide",
     menu_items={
         'Get Help': 'https://docs.trymito.io/',
@@ -157,6 +157,21 @@ st.markdown("""
             font-weight: 600;
             letter-spacing: -0.01em;
         }
+
+        /* Footer styles */
+        footer a:hover {
+            color: rgb(67, 56, 202) !important;
+            text-decoration: underline !important;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            backdrop-filter: blur(8px);
+        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -170,142 +185,239 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.title('Multi-File Python Script Generator Demo')
+# Create tabs
+mito_tab, samples_tab = st.tabs(["📝 MitoSheet", "📁 Sample Files"])
 
-st.markdown("""
-This app allows you to **manipulate multiple data files** through an intuitive Excel interface and **outputs the corresponding Python scripts** as you go. After importing your data, interact with the spreadsheet as if you're using Excel, and the app will record your transformation steps, generating the corresponding Python code.
-
-To use the app, follow these steps:
-1. Import multiple data files into Streamlit  
-2. Use Mitosheet to manipulate and clean the data based on the prompts  
-3. Once you're done, download the cleaned data as CSV files and view the Python scripts for each step
-
-This app is a demo of the Mitosheet library. Learn more [here](https://trymito.io).
-""")
-
-st.header("Upload files to use MitoSheet")
-
-# Main Content
-col1, col2, col3 = st.columns([0.5, 1, 0.5])
-with col1:
-    st.info("""Upload files -> Click AI button - for natural language-based spreadsheet editing.
+# MitoSheet Tab Content
+with mito_tab:
+    col1, col2, col3 = st.columns([0.5, 1, 0.5])
+    with col1:
+        st.info("""Upload files -> Click AI button - for natural language-based spreadsheet editing.
 Press Win+H (Windows) or Cmd+H (Mac) to use your device's native voice dictation.""")
-with col2:
-    # Add a container with custom styling
-    with st.container():
-        uploaded_files = st.file_uploader(
-            " ",  # Empty space with a single space to maintain layout
-            accept_multiple_files=True,
-            help="Supported formats: CSV, TXT, XLSX, Parquet",
-            label_visibility="collapsed",  # This will hide the label completely
-        )
-
-# Create a container in col3 for separator inputs
-with col3:
-    separator_inputs = {}
-    if uploaded_files:
-        for uploaded_file in uploaded_files:
-            if uploaded_file.name.endswith('.txt'):
-                separator_inputs[uploaded_file.name] = st.text_input(
-                    f"Separator for {uploaded_file.name}",
-                    ',',
-                    key=f"sep_{uploaded_file.name}"
-                )
-
-@st.cache_data
-def convert_df(df):
-    return df.to_csv(index=False).encode('utf-8')
-
-def load_file(uploaded_file, sep=None, selected_sheet=None):
-    try:
-        file_type = uploaded_file.name.split('.')[-1].lower()
-
-        if file_type == 'csv':
-            df = pd.read_csv(uploaded_file)
-        elif file_type == 'txt':
-            # Use the separator from our inputs dictionary
-            sep = separator_inputs.get(uploaded_file.name, ',')
-            df = pd.read_csv(uploaded_file, sep=sep) if sep else None
-            if df is None:
-                st.warning("Please provide a valid separator for the TXT file.")
-        elif file_type == 'xlsx':
-            xls = pd.ExcelFile(uploaded_file, engine='openpyxl')
-            df = pd.read_excel(xls, sheet_name=selected_sheet) if selected_sheet else None
-        elif file_type == 'parquet':
-            df = pd.read_parquet(uploaded_file)
-        else:
-            df = None
-            st.warning(f"Unsupported file format for {uploaded_file.name}. Please upload CSV, TXT, XLSX, or Parquet.")
-    except Exception as e:
-        st.error(f"Error loading file: {e}")
-        df = None
-
-    return df
-
-def display_mito_output(dfs, code):
-    st.markdown(f"**Code Generated**")
-    st.code(code)
-
-    st.header(f"Final Output")
-    for key, df_temp in dfs.items():
-        st.markdown(f"**DataFrame**: {key}")
-        st.write(df_temp)
-        
-        csv = convert_df(df_temp)
-        st.download_button(
-            label=f"Download {key} as CSV",
-            data=csv,
-            file_name=f'{key}.csv',
-            mime='text/csv'
-        )
-
-def clean_name(name):
-    # Remove any characters that are not alphanumeric or underscore
-    cleaned = re.sub(r'\W+', '_', name)
-    # Ensure the name starts with a letter or underscore
-    if not cleaned[0].isalpha() and cleaned[0] != '_':
-        cleaned = '_' + cleaned
-    # If the name is a Python keyword, prefix it with an underscore
-    if keyword.iskeyword(cleaned):
-        cleaned = '_' + cleaned
-    # Ensure the name is not empty
-    if not cleaned:
-        cleaned = '_unnamed'
-    return cleaned
-
-if uploaded_files:
-    dataframes = []
-    for uploaded_file in uploaded_files:
-        if uploaded_file.name.endswith('.xlsx'):
-            xls = pd.ExcelFile(uploaded_file, engine='openpyxl')
-            sheet_names = xls.sheet_names
-            selected_sheet = st.selectbox(f"Select a sheet name for {uploaded_file.name}", sheet_names)
-        else:
-            selected_sheet = None
-        
-        df = load_file(uploaded_file, selected_sheet=selected_sheet)
-        
-        if df is not None:
-            # Use the cleaned file name (without extension) as the DataFrame name
-            file_name = clean_name(os.path.splitext(uploaded_file.name)[0])
-            df.name = file_name
-            dataframes.append(df)
-
-    if dataframes:
-        try:
-            # Call the Mitosheet spreadsheet function with all dataframes
-            dfs, code = spreadsheet(*dataframes)
-            # Display Mitosheet output
-            display_mito_output(dfs, code)
-        except Exception as e:
-            st.error(f"Error processing spreadsheet: {e}")
-else:
-    st.info("Awaiting file upload. Supported formats: CSV, TXT, XLSX, Parquet. Or you can import a demo file to begin.")
+    with col2:
+        # Add a container with custom styling
+        with st.container():
+            uploaded_files = st.file_uploader(
+                " ",  # Empty space with a single space to maintain layout
+                accept_multiple_files=True,
+                help="Supported formats: CSV, TXT, XLSX, Parquet",
+                label_visibility="collapsed",  # This will hide the label completely
+            )
     
-    try:
-        # Load demo file and interact with Mitosheet
-        dfs, code = spreadsheet(import_folder='./data')
-        if len(dfs) != 0:
-            display_mito_output(dfs, code)
-    except Exception as e:
-        st.error(f"Error loading demo file: {e}")
+    # Create a container in col3 for separator inputs
+    with col3:
+        separator_inputs = {}
+        if uploaded_files:
+            for uploaded_file in uploaded_files:
+                if uploaded_file.name.endswith('.txt'):
+                    separator_inputs[uploaded_file.name] = st.text_input(
+                        f"Separator for {uploaded_file.name}",
+                        ',',
+                        key=f"sep_{uploaded_file.name}"
+                    )
+
+    @st.cache_data
+    def convert_df(df):
+        return df.to_csv(index=False).encode('utf-8')
+
+    def load_file(uploaded_file, sep=None, selected_sheet=None):
+        try:
+            file_type = uploaded_file.name.split('.')[-1].lower()
+
+            if file_type == 'csv':
+                df = pd.read_csv(uploaded_file)
+            elif file_type == 'txt':
+                # Use the separator from our inputs dictionary
+                sep = separator_inputs.get(uploaded_file.name, ',')
+                df = pd.read_csv(uploaded_file, sep=sep) if sep else None
+                if df is None:
+                    st.warning("Please provide a valid separator for the TXT file.")
+            elif file_type == 'xlsx':
+                xls = pd.ExcelFile(uploaded_file, engine='openpyxl')
+                df = pd.read_excel(xls, sheet_name=selected_sheet) if selected_sheet else None
+            elif file_type == 'parquet':
+                df = pd.read_parquet(uploaded_file)
+            else:
+                df = None
+                st.warning(f"Unsupported file format for {uploaded_file.name}. Please upload CSV, TXT, XLSX, or Parquet.")
+        except Exception as e:
+            st.error(f"Error loading file: {e}")
+            df = None
+
+        return df
+
+    def display_mito_output(dfs, code):
+        st.header("Code Generated")
+        st.code(code, language="python")
+
+        st.header("Final Output")
+        for key, df_temp in dfs.items():
+            st.subheader(f"DataFrame: {key}")
+            st.dataframe(df_temp, use_container_width=True)
+            
+            csv = convert_df(df_temp)
+            st.download_button(
+                label=f"📥 Download {key} as CSV",
+                data=csv,
+                file_name=f'{key}.csv',
+                mime='text/csv',
+            )
+            st.markdown("---")
+
+    def clean_name(name):
+        # Remove any characters that are not alphanumeric or underscore
+        cleaned = re.sub(r'\W+', '_', name)
+        # Ensure the name starts with a letter or underscore
+        if not cleaned[0].isalpha() and cleaned[0] != '_':
+            cleaned = '_' + cleaned
+        # If the name is a Python keyword, prefix it with an underscore
+        if keyword.iskeyword(cleaned):
+            cleaned = '_' + cleaned
+        # Ensure the name is not empty
+        if not cleaned:
+            cleaned = '_unnamed'
+        return cleaned
+
+    if uploaded_files:
+        dataframes = []
+        for uploaded_file in uploaded_files:
+            if uploaded_file.name.endswith('.xlsx'):
+                xls = pd.ExcelFile(uploaded_file, engine='openpyxl')
+                sheet_names = xls.sheet_names
+                selected_sheet = st.selectbox(f"Select a sheet name for {uploaded_file.name}", sheet_names)
+            else:
+                selected_sheet = None
+            
+            df = load_file(uploaded_file, selected_sheet=selected_sheet)
+            
+            if df is not None:
+                # Use the cleaned file name (without extension) as the DataFrame name
+                file_name = clean_name(os.path.splitext(uploaded_file.name)[0])
+                df.name = file_name
+                dataframes.append(df)
+
+        if dataframes:
+            try:
+                # Call the Mitosheet spreadsheet function with all dataframes
+                dfs, code = spreadsheet(*dataframes)
+
+                # Display Mitosheet output
+                display_mito_output(dfs, code)
+            except Exception as e:
+                st.error(f"Error processing spreadsheet: {e}")
+    else:
+        try:
+            # Load demo file and interact with Mitosheet
+            dfs, code = spreadsheet(import_folder='./data')
+            if len(dfs) != 0:
+                display_mito_output(dfs, code)
+        except Exception as e:
+            st.error(f"Error loading demo file: {e}")
+
+    # Add Footer
+    st.markdown("""
+        <footer style="background-color: rgba(255, 255, 255, 0.5); border-top: 1px solid rgba(79, 70, 229, 0.1); padding: 0.5rem 0; margin-top: 2rem; text-align: center; font-size: 0.875rem; color: rgba(30, 27, 75, 0.7);">
+            <div style="max-width: 80rem; margin: 0 auto; padding: 0 1rem;">
+                Amar Harolikar <span style="margin: 0 0.375rem; color: rgba(79, 70, 229, 0.3)">•</span> 
+                Specialist - Decision Sciences & Applied Generative AI <span style="margin: 0 0.375rem; color: rgba(79, 70, 229, 0.3)">•</span>
+                <a href="https://www.linkedin.com/in/amarharolikar" target="_blank" rel="noopener noreferrer" 
+                   style="color: rgb(79, 70, 229); text-decoration: none; transition: all 0.2s;">LinkedIn</a> 
+                <span style="margin: 0 0.375rem; color: rgba(79, 70, 229, 0.3)">•</span>
+                <a href="https://rex.tigzig.com" target="_blank" rel="noopener noreferrer"
+                   style="color: rgb(79, 70, 229); text-decoration: none; transition: all 0.2s;">rex.tigzig.com</a> 
+                <span style="margin: 0 0.375rem; color: rgba(79, 70, 229, 0.3)">•</span>
+                <a href="https://tigzig.com" target="_blank" rel="noopener noreferrer"
+                   style="color: rgb(79, 70, 229); text-decoration: none; transition: all 0.2s;">tigzig.com</a>
+            </div>
+        </footer>
+    """, unsafe_allow_html=True)
+
+# Sample Files Tab Content
+with samples_tab:
+    st.title("Sample Files")
+    
+    def count_file_rows(file_path):
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return sum(1 for _ in f)
+        except Exception as e:
+            return "Unable to count rows"
+    
+    # Sample file metadata
+    sample_files = [
+        {
+            "name": "ODI Cricket Data (2002-2024)",
+            "description": """Comprehensive One Day International cricket data spanning from 2002 to 2024. 
+Contains detailed match statistics, scores, and player performance data.""",
+            "file_path": "sample_files/ODI.txt",
+            "size": "187 MB",
+            "rows": count_file_rows('sample_files/ODI.txt'),
+            "preview_rows": 5
+        },
+        {
+            "name": "ICICI Bluechip Fund (Sep-Dec 2024)",
+            "description": """Mutual fund performance data for ICICI Bluechip Fund comparing two quarters (September and December 2024). 
+Contains NAV values and fund metrics.""",
+            "file_path": "sample_files/ICICI_BLUECHIP_SEP_DEC_2024.txt",
+            "size": "7.0 KB",
+            "rows": count_file_rows('sample_files/ICICI_BLUECHIP_SEP_DEC_2024.txt'),
+            "preview_rows": 5
+        },
+        {
+            "name": "RBI Cards Data (December 2024)",
+            "description": """Monthly RBI data on credit/debit card transactions and ATM/POS usage for December 2024. 
+Includes transaction volumes and values across different channels.""",
+            "file_path": "sample_files/RBI_CARDS_ATM_POS_DEC2024.txt",
+            "size": "14 KB",
+            "rows": count_file_rows('sample_files/RBI_CARDS_ATM_POS_DEC2024.txt'),
+            "preview_rows": 5
+        },
+        {
+            "name": "RBI Cards Data (Full Year 2024)",
+            "description": """Comprehensive yearly RBI data on credit/debit card transactions and ATM/POS usage for the entire year 2024. 
+Monthly breakdown of transaction metrics.""",
+            "file_path": "sample_files/RBI_CARDS_ATM_POS_2024_FULL_YEAR_MONTHLY.txt",
+            "size": "157 KB",
+            "rows": count_file_rows('sample_files/RBI_CARDS_ATM_POS_2024_FULL_YEAR_MONTHLY.txt'),
+            "preview_rows": 5
+        }
+    ]
+
+    # Display sample files catalog with enhanced styling
+    for file in sample_files:
+        with st.expander(f"{file['name']} ({file['size']} • {file['rows']:,} rows)"):
+            st.markdown(f"""
+            <div style='background-color: rgba(79, 70, 229, 0.05); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;'>
+                {file['description']}
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Read and display preview with enhanced styling
+            try:
+                with open(file['file_path'], 'r', encoding='utf-8') as f:
+                    preview_data = ''.join([next(f) for _ in range(file['preview_rows'])])
+                st.markdown("**📄 Preview (First 5 rows):**")
+                st.code(preview_data, language='text')
+            except Exception as e:
+                st.warning(f"Preview not available: {str(e)}")
+            
+            # Download button with enhanced styling and spinner
+            try:
+                with open(file['file_path'], 'rb') as f:
+                    file_data = f.read()
+                    
+                col1, col2, col3 = st.columns([1,2,1])
+                with col2:
+                    if st.download_button(
+                        label=f"📥 Download {file['name']}",
+                        data=file_data,
+                        file_name=file['file_path'].split('/')[-1],
+                        mime='text/plain',
+                        use_container_width=True,
+                    ):
+                        with st.spinner(f'Preparing download for {file["name"]}...'):
+                            # Add a small delay to show the spinner (especially for small files)
+                            time.sleep(1)
+                        st.success(f'✅ {file["name"]} is ready for download!')
+            except Exception as e:
+                st.error(f"Error setting up download: {str(e)}")
