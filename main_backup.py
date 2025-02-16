@@ -7,10 +7,10 @@ import os
 import re
 import keyword
 
-# Configure the app
+# Must be the first Streamlit command
 st.set_page_config(
-    page_title="Data Transformation App",
-    page_icon="📊",
+    page_title="MitoSheet Script Generator Demo",
+    initial_sidebar_state="expanded",
     layout="wide",
     menu_items={
         'Get Help': 'https://docs.trymito.io/',
@@ -26,17 +26,24 @@ def load_css(css_file):
 
 st.markdown(load_css('style.css'), unsafe_allow_html=True)
 
-# Define the pages
-pages = [
-    st.Page("mito_app.py", title="MitoSheet", icon="📝"),
-    st.Page("sample_files.py", title="Sample Files", icon="📁")
-]
+# Create a container for the main content
+with st.container():
+    st.title("Multi-File Python Script Generator Demo")
 
-# Set up navigation
-pg = st.navigation(pages)
-
-# Run the selected page
-pg.run()
+    # Introduction section
+    st.markdown("""
+    This app allows you to **manipulate multiple data files** through an intuitive Excel interface and **outputs the corresponding Python scripts** as you go. After importing your data, interact with the spreadsheet as if you're using Excel, and the app will record your transformation steps, generating the corresponding Python code.
+    """)
+    
+    # Steps in an info box
+    st.info("""
+    To use the app, follow these steps:
+    1. Import multiple data files into Streamlit  
+    2. Use Mitosheet to manipulate and clean the data based on the prompts  
+    3. Once you're done, download the cleaned data as CSV files and view the Python scripts for each step
+    """)
+    
+    st.markdown("This app is a demo of the Mitosheet library. Learn more [here](https://trymito.io).")
 
 @st.cache_data
 def convert_df(df):
