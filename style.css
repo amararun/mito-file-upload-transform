@@ -1,181 +1,39 @@
-/* Import Nunito font from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+/* Import Nunito Sans font */
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap');
 
-/* Modern color scheme with indigo palette */
-:root {
-    --primary-color: #4F46E5;  /* Indigo 600 */
-    --primary-dark: #4338CA;   /* Indigo 700 */
-    --primary-light: #6366F1;  /* Indigo 500 */
-    --heading-color: #312E81;  /* Indigo 900 - for main headers */
-    --subheading-color: #4338CA;  /* Indigo 700 - for subheaders */
-    --text-color: #3730A3;     /* Indigo 800 - for important text */
-    --text-light: #6366F1;     /* Indigo 500 - for secondary text */
-    --background-color: #F9FAFB;
-    --card-background: #FFFFFF;
+/* Remove top spacing */
+[data-testid="stAppViewContainer"] {
+    padding-top: 0;
 }
 
-/* Global font settings */
-html, body, [class*="css"] {
-    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif !important;
-    font-size: 1rem;
-    font-weight: 400;
-    letter-spacing: 0;  /* Nunito has great natural spacing */
-    color: var(--text-color);
+.block-container {
+    padding-top: 0;
+    margin-top: 0;
 }
 
-/* Override Streamlit's default fonts everywhere */
-.stMarkdown, .stButton, .stDownloadButton, .stSelectbox, 
-.stTextInput, .stTextArea, .stNumberInput, .stDateInput,
-.stTimeInput, .stHeader, .stAlert, .stTitle, .stWidgetLabel,
-.stDataFrame, div[data-testid="stText"] {
-    font-family: 'Nunito', sans-serif !important;
-}
-
-/* Make headers extra distinctive with indigo colors */
-h1, .stTitle {
-    font-family: 'Nunito', sans-serif !important;
-    font-weight: 800;  /* Extra bold for main headers */
+/* Header styles */
+.header-container {
+    background: linear-gradient(135deg, #2D1B69 0%, #3B2178 50%, #472B8A 100%);  /* Deep purple gradient */
+    padding: 2.0rem 1.2rem 0.5rem;  /* Increased top padding slightly */
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
     margin-bottom: 1rem;
-    letter-spacing: -0.01em;  /* Slight negative tracking for headers */
-    line-height: 1.1;
-    color: var(--heading-color) !important;
+    min-height: 3.8rem;  /* Reduced minimum height */
 }
 
-h2 {
-    font-family: 'Nunito', sans-serif !important;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    letter-spacing: -0.01em;
-    line-height: 1.2;
-    color: var(--subheading-color) !important;
-}
-
-h3 {
-    font-family: 'Nunito', sans-serif !important;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    letter-spacing: 0;
-    line-height: 1.2;
-    color: var(--text-light) !important;
-}
-
-/* Style links in indigo */
-a {
-    color: var(--primary-color) !important;
-    text-decoration: none;
-    font-family: 'Nunito', sans-serif !important;
-    font-weight: 600;
-}
-
-a:hover {
-    color: var(--primary-dark) !important;
-    text-decoration: underline;
-}
-
-/* Button styling */
-.stButton > button, .stDownloadButton > button {
-    font-family: 'Nunito', sans-serif !important;
-    font-weight: 700;  /* Bold for buttons */
-    font-size: 0.95rem;
-    letter-spacing: 0.02em;
-}
-
-/* Alert and info boxes */
-.stAlert {
-    font-family: 'Nunito', sans-serif !important;
-    font-weight: 400;
-    letter-spacing: 0;
-}
-
-/* Remove file uploader styles from global CSS */
-[data-testid="stFileUploader"],
-[data-testid="stFileUploadDropzone"] {
-    all: unset;
-}
-
-/* DataFrame styling */
-.dataframe {
-    font-family: 'Nunito', sans-serif !important;
-}
-
-.dataframe th {
-    font-weight: 700;
-    letter-spacing: 0.01em;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-}
-
-.dataframe td {
-    font-weight: 400;
-    font-size: 0.9rem;
-}
-
-/* Code block styling */
-.stCodeBlock, code {
-    font-family: 'JetBrains Mono', 'Courier New', monospace !important;
-    font-size: 0.9rem;
-    border-radius: 0.5rem;
-    margin: 1rem 0;
-    background-color: #F5F3FF !important;
-    border: 1px solid #C7D2FE;
-}
-
-/* Additional styles */
-p, li, div {
-    font-family: 'Nunito', sans-serif !important;
-    line-height: 1.6;
-    font-weight: 400;
-    color: var(--text-color);
-}
-
-/* Input fields */
-input, select, textarea {
-    font-family: 'Nunito', sans-serif !important;
-    font-weight: 400;
-    letter-spacing: 0;
-}
-
-/* Rest of your existing styles... */
-.stMarkdown, .stButton, .stDownloadButton {
-    background-color: var(--card-background);
-    padding: 1.5rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    margin-bottom: 1rem;
-}
-
-/* Update button colors */
-.stButton > button:hover, .stDownloadButton > button:hover {
-    background-color: var(--primary-dark);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-/* Update info boxes with indigo theme */
-.stAlert {
-    background-color: #EEF2FF;  /* Indigo 50 */
-    color: var(--text-color);
-    border: 1px solid #C7D2FE;  /* Indigo 200 */
-    padding: 1rem;
-    border-radius: 0.5rem;
-}
-
-/* DataFrame display with indigo accents */
-.dataframe {
-    border-radius: 0.5rem;
-    overflow: hidden;
-    border: 1px solid #C7D2FE;  /* Indigo 200 */
-}
-
-.dataframe th {
-    background-color: #EEF2FF;  /* Indigo 50 */
-    padding: 0.75rem;
-    font-weight: 600;
-    color: var(--text-color);
-}
-
-.dataframe td {
-    padding: 0.75rem;
-    border-top: 1px solid #E0E7FF;  /* Indigo 100 */
-    color: var(--text-color);
+.header-text {
+    color: white;
+    font-size: 22px;  /* Reduced font size */
+    font-weight: 700;  /* Slightly adjusted weight for Nunito Sans */
+    font-family: 'Nunito Sans', sans-serif;
+    line-height: 1.1;  /* Slightly increased for Nunito Sans */
+    margin: 0;
+    padding-top: 0.6rem;  /* Slightly increased top padding for text */
+    display: inline-block;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);  /* Subtle text shadow for depth */
+    letter-spacing: 0;  /* Reset letter spacing for Nunito Sans */
 } 
