@@ -14,7 +14,7 @@
 /* Header styles */
 .header-container {
     background: linear-gradient(135deg, #2D1B69 0%, #3B2178 50%, #472B8A 100%);  /* Deep purple gradient */
-    padding: 0.2rem 1.2rem 0.5rem;  /* Increased top padding slightly */
+    padding: 0.0rem 1.2rem 0.5rem;  /* Increased top padding slightly */
     width: 100vw;
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);

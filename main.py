@@ -180,6 +180,17 @@ st.markdown("""
             z-index: 999;
             backdrop-filter: blur(8px);
         }
+
+        /* Reduce space between elements */
+        .element-container {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        .stApp > header {
+            margin-bottom: 0 !important;
+        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -242,14 +253,14 @@ st.markdown("""
         </div>
         <div style='color: rgba(30, 27, 75, 0.8); line-height: 1.5; margin-top: 0.4rem;'>
             <a href='https://mito-script-generator-demo.streamlit.app' target='_blank' style='color: rgb(79, 70, 229); text-decoration: none;'>
-                Original Demo & Code
+                Original Demo & Code from Mito
             </a>
             <span style='margin: 0 0.25rem; color: rgba(79, 70, 229, 0.3)'>•</span>
             <a href='https://github.com/amararun/mito-file-upload-transform' target='_blank' style='color: rgb(79, 70, 229); text-decoration: none;'>
                 This App's Repo
             </a>
             <span style='margin: 0 0.25rem; color: rgba(79, 70, 229, 0.3)'>•</span>
-            💡 This app is based on the original open-source demo and code with a few formatting changes
+            💡 This app is based on the original open-source demo and code from Mito with a few formatting changes
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -263,15 +274,37 @@ with mito_tab:
     with col1:
         st.info("""Upload files -> Click AI button - for natural language-based spreadsheet editing.
 Press Win+H (Windows) or Cmd+H (Mac) to use your device's native voice dictation.""")
+    
+    # Add informative note with icons
+    st.markdown("""
+        <div style='background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), rgba(79, 70, 229, 0.02));
+                    padding: 0.75rem 1rem;
+                    border-radius: 0.5rem;
+                    border: 1px solid rgba(79, 70, 229, 0.15);
+                    margin: 0;
+                    font-size: 0.9rem;
+                    line-height: 1.4;'>
+            <p style='margin: 0; color: rgba(30, 27, 75, 0.8);'>
+                📤 Upload your own files above 
+                <span style='margin: 0 0.25rem; color: rgba(79, 70, 229, 0.3)'>•</span>
+                📥 Click <strong>Import</strong> in Mitosheet to use sample <code>loans.csv</code> from data folder
+                <span style='margin: 0 0.25rem; color: rgba(79, 70, 229, 0.3)'>•</span>
+                📁 Check <strong>Sample Files</strong> tab for more examples
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+    
     with col2:
-        # Add a container with custom styling
+        # Add a container with custom styling and minimal spacing
         with st.container():
+            st.markdown('<div style="margin: 0; padding: 0;">', unsafe_allow_html=True)
             uploaded_files = st.file_uploader(
                 " ",  # Empty space with a single space to maintain layout
                 accept_multiple_files=True,
                 help="Supported formats: CSV, TXT, XLSX, Parquet",
                 label_visibility="collapsed",  # This will hide the label completely
             )
+            st.markdown('</div>', unsafe_allow_html=True)
     
     # Create a container in col3 for separator inputs
     with col3:
