@@ -278,18 +278,22 @@ Press Win+H (Windows) or Cmd+H (Mac) to use your device's native voice dictation
     # Add informative note with icons
     st.markdown("""
         <div style='background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), rgba(79, 70, 229, 0.02));
-                    padding: 0.6rem 0.9rem 0.6rem 0.9rem;
+                    padding: 0.5rem 0.75rem;
                     border-radius: 0.5rem;
                     border: 1px solid rgba(79, 70, 229, 0.15);
                     margin: 0;
-                    font-size: 0.85rem;
-                    line-height: 1.4;
-                    max-width: fit-content;'>
-            <p style='margin: 0; color: rgba(30, 27, 75, 0.8); white-space: nowrap;'>
+                    font-size: 0.8rem;
+                    line-height: 1.3;
+                    display: inline-block;'>
+            <p style='margin: 0; 
+                      color: rgba(30, 27, 75, 0.8); 
+                      display: flex;
+                      align-items: center;
+                      white-space: nowrap;'>
                 📤 Upload your own files above 
-                <span style='margin: 0 0.25rem; color: rgba(79, 70, 229, 0.3)'>•</span>
+                <span style='margin: 0 0.2rem; color: rgba(79, 70, 229, 0.3)'>•</span>
                 📥 Click <strong>Import</strong> in Mitosheet to use sample <code>loans.csv</code> from data folder
-                <span style='margin: 0 0.25rem; color: rgba(79, 70, 229, 0.3)'>•</span>
+                <span style='margin: 0 0.2rem; color: rgba(79, 70, 229, 0.3)'>•</span>
                 📁 Check <strong>Sample Files</strong> tab for more examples
             </p>
         </div>
