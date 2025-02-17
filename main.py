@@ -346,15 +346,6 @@ with samples_tab:
     # Sample file metadata
     sample_files = [
         {
-            "name": "ODI Cricket Data (2002-2024)",
-            "description": """Comprehensive One Day International cricket data spanning from 2002 to 2024. 
-Contains detailed match statistics, scores, and player performance data.""",
-            "file_path": "sample_files/ODI.txt",
-            "size": "187 MB",
-            "rows": count_file_rows('sample_files/ODI.txt'),
-            "preview_rows": 5
-        },
-        {
             "name": "ICICI Bluechip Fund (Sep-Dec 2024)",
             "description": """Mutual fund performance data for ICICI Bluechip Fund comparing two quarters (September and December 2024). 
 Contains NAV values and fund metrics.""",
@@ -421,3 +412,25 @@ Monthly breakdown of transaction metrics.""",
                         st.success(f'✅ {file["name"]} is ready for download!')
             except Exception as e:
                 st.error(f"Error setting up download: {str(e)}")
+
+    # Additional Files Section
+    st.markdown("---")
+    st.subheader("📦 Additional Sample Files")
+    
+    st.markdown("""
+    <div style='background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(79, 70, 229, 0.05)); padding: 1.5rem; border-radius: 0.75rem; border: 1px solid rgba(79, 70, 229, 0.2);'>
+        <h4 style='color: rgb(79, 70, 229); margin-bottom: 1rem; font-size: 1.1rem;'>More Sample Files Available on Google Drive 🔗</h4>
+        <p style='margin-bottom: 1rem;'>Access our extended collection of sample files for testing and analysis:</p>
+        <ol style='margin-left: 1.5rem; margin-bottom: 1rem;'>
+            <li style='margin-bottom: 0.5rem;'><strong>Live RBI Monthly Card JDMP Statistics</strong> - Current and historical card transaction data</li>
+            <li style='margin-bottom: 0.5rem;'><strong>Mock Bank Credit Card Data</strong> - Simulated customer profiles and transaction patterns</li>
+            <li style='margin-bottom: 0.5rem;'><strong>ODI Cricket Dataset (180 MB)</strong> - Comprehensive cricket statistics from 2002-2024 with 1.5 million records</li>
+            <li style='margin-bottom: 0.5rem;'><strong>Bank Transaction Analytics</strong> - Detailed financial transaction datasets</li>
+        </ol>
+        <a href="https://drive.google.com/drive/folders/1QlE8tJDKAX9XaHUCabfflPgRnNiOXigV?usp=drive_link" 
+           target="_blank" 
+           style='display: inline-block; background-color: rgb(79, 70, 229); color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; text-decoration: none; font-weight: 500; margin-top: 0.5rem; transition: all 0.2s;'>
+           🔗 Access Files on Google Drive
+        </a>
+    </div>
+    """, unsafe_allow_html=True)
