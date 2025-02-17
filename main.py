@@ -185,6 +185,37 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# Mito Team Acknowledgment
+st.markdown("""
+    <div style='background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), rgba(79, 70, 229, 0.08)); 
+               padding: 0.75rem 1rem; 
+               border-radius: 0.5rem; 
+               border: 1px solid rgba(79, 70, 229, 0.15);
+               margin: 0.5rem 0 1rem 0;
+               font-size: 0.9rem;'>
+        <div style='color: rgba(30, 27, 75, 0.8); line-height: 1.5;'>
+            🔍 Transform data with a spreadsheet interface + natural language AI 
+            <span style='margin: 0 0.25rem; color: rgba(79, 70, 229, 0.3)'>•</span>
+            ⚡ Powered by Mitosheet & Mito AI 
+            <span style='margin: 0 0.25rem; color: rgba(79, 70, 229, 0.3)'>•</span>
+            <a href='https://www.trymito.io' target='_blank' style='color: rgb(79, 70, 229); text-decoration: none;'>
+                Visit trymito.io
+            </a>
+        </div>
+        <div style='color: rgba(30, 27, 75, 0.8); line-height: 1.5; margin-top: 0.4rem;'>
+            <a href='https://mito-script-generator-demo.streamlit.app' target='_blank' style='color: rgb(79, 70, 229); text-decoration: none;'>
+                Original Demo & Code
+            </a>
+            <span style='margin: 0 0.25rem; color: rgba(79, 70, 229, 0.3)'>•</span>
+            <a href='https://github.com/amararun/mito-file-upload-transform' target='_blank' style='color: rgb(79, 70, 229); text-decoration: none;'>
+                This App's Repo
+            </a>
+            <span style='margin: 0 0.25rem; color: rgba(79, 70, 229, 0.3)'>•</span>
+            💡 This app is based on the original open-source demo and code with a few formatting changes
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
 # Create tabs
 mito_tab, samples_tab = st.tabs(["📝 MitoSheet", "📁 Sample Files"])
 
@@ -335,6 +366,18 @@ Press Win+H (Windows) or Cmd+H (Mac) to use your device's native voice dictation
 # Sample Files Tab Content
 with samples_tab:
     st.title("Sample Files")
+    
+    # Add delimiter info with styling
+    st.markdown("""
+        <div style='background: linear-gradient(135deg, rgba(255, 171, 0, 0.1), rgba(255, 171, 0, 0.05));
+                 padding: 0.75rem 1rem;
+                 border-radius: 0.5rem;
+                 border: 1px solid rgba(255, 171, 0, 0.2);
+                 margin: 0.5rem 0 1.5rem 0;
+                 font-size: 0.95rem;'>
+            ℹ️ All sample files use pipe ( <code>|</code> ) as delimiter. When importing, enter <code>|</code> in the delimiter field.
+        </div>
+    """, unsafe_allow_html=True)
     
     def count_file_rows(file_path):
         try:
