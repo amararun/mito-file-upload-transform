@@ -7,6 +7,14 @@ import os
 import re
 import keyword
 import time
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# Get OpenAI API key from environment (both cases)
+openai_api_key = os.getenv('OPENAI_API_KEY')
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 # Configure the app
 st.set_page_config(
